@@ -7,23 +7,19 @@ library(zoo)
 
 colorBlind4   <- c("#ffe119", "#f58231", "#dcbeff", "#4363d8")
 
-
 # Read in SNP matrix published in Schreiber et al., 2023 as hapmap file. The genotypes need to be encoded as A, C, G, T
-
 hap<-fread("Hapmap_haploid.hmp.txt")
 
-
-# Read in the SNP information in numeric transposed format
+# Read in the SNP informaiton in numeric transposed format
 num<-fread("SNP_numeric.txt")
 num<-as.data.frame(num)
 
 hapnames<-names(hap)[-c(1:11)]
 
-# Read in a metadata file generated from Online Resource 1. 
+# Read in Metadata
 metadata <- read.table("Metadata.txt", head=TRUE, sep="\t")
 
-
-# Make sure that the accession names in the snpmatrix and the metadata are identical
+# Make sure that the accession names in the snpmatrix and the metata are identical
 SamplesKeep <- colnames(hap)[-c(1:11)]
 metadata <- metadata[metadata$Line%in%SamplesKeep,]
 
@@ -32,6 +28,7 @@ metadata %<>% arrange(factor(Line, levels = hapnames))
 names(hap)[-c(1:11)] == metadata$Line
 
 metadata<-as.data.table(metadata)
+
 
 num$Line<-names(hap)[-c(1:11)]
 num%<>%relocate(Line)
@@ -118,20 +115,26 @@ data_vline_p1<-data.frame(chrom = c("1H", "2H", "3H", "3H", "5H", "5H", "6H", "6
                           vline = c(330.42, 81.4, 283.7, 379.4, 68.78, 320.04, 45.6, 382, 410))
 
 
+data_vline_centro<-data.frame(chrom = c("1H", "2H", "3H", "4H", "5H",  "6H", "7H" ),
+                              vline = c(211.460194, 298.511764, 270.896959, 273.503980, 214.765154, 252.168825, 329.584237))
+
+
+
+
 scaleFUN <- function(x) sprintf("%.2f", x)
 
 p1<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=PIC_roll, color=Range)) + geom_point(size=0.3) +     theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE)) +
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlind4)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlind4)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 p2<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=AF_roll, color=Range)) + geom_point(size=0.3) +    theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlind4)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Release period")+ theme(legend.position = "none")+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlind4)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Release period")+ theme(legend.position = "none")+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 
 p3<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=AF_roll, color=Range)) + geom_point(size=0.3) +    theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlind4)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Release period")+theme(legend.position = "bottom")+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+ guides(colour = guide_legend(override.aes = list(size=2)))
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlind4)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Release period")+theme(legend.position = "bottom")+scale_y_continuous(labels=scaleFUN) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+ guides(colour = guide_legend(override.aes = list(size=2)))+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 legend<-get_legend(p3)
 p4<-as_ggplot(legend)
@@ -140,6 +143,3 @@ tiff("Fig2.tiff", height=12, width=17.4, units = "cm", res=600)
 ggarrange(p1, p2, p4,  nrow=3,  heights = c(0.9, 1, 0.1), labels = c("a", "b"))
 
 dev.off()
-
-
-
