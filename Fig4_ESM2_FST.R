@@ -4,10 +4,6 @@
 
 source("https://raw.githubusercontent.com/rwonneberger/R_functions/main/Ronja_functions.R")
 
-colorBlindGrey7   <- c("#E69F00","#009E73", "#56B4E9",  
-                       "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-
 window="100kb"
 step="10kb"
 
