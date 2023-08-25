@@ -49,11 +49,15 @@ scaleFUN <- function(x) sprintf("%.2f", x)
 data_vline_p1<-data.frame(CHROM = c("3H", "4H", "5H", "5H" ),
                           vline = c(267.7, 34.4,  68.78, 320.04))
 
+data_vline_centro<-data.frame(CHROM = c("1H", "2H", "3H", "4H", "5H",  "6H", "7H" ),
+                              vline = c(211.460194, 298.511764, 270.896959, 273.503980, 214.765154, 252.168825, 329.584237))
+
+
 
 p1<-ggplot(FST_k2,aes(x=BIN_START/1000000,y=WEIGHTED_FST))  + geom_point(size=0.4)+   theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
   theme(axis.text.x = element_text(angle = 90, vjust=.5)) + 
-  facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)")+ ylab("FST")  +scale_y_continuous(labels=scaleFUN)+theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank()) + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)")+ ylab("FST")  +scale_y_continuous(labels=scaleFUN)+theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey") + geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
 
 data_vline_p2<-data.frame(CHROM = c("3H", "4H", "5H", "5H", "6H", "7H"),
                           vline = c(267.7, 34.4,  68.78, 320.04, 248.2, 316.6 ))
@@ -85,7 +89,7 @@ for (i in unique(FST_k3$Range)) {
             axis.text.x=element_blank(),
             axis.ticks.x=element_blank()) +
       scale_y_continuous(labels=scaleFUN)+
-      facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)")+ ylab("FST")+scale_y_continuous(labels=scaleFUN)  + geom_vline(data_vline[[count]], mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red") } else  {
+      facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)")+ ylab("FST")+scale_y_continuous(labels=scaleFUN)+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")  + geom_vline(data_vline[[count]], mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red") } else  {
         sub<-FST_k3[FST_k3$Range == i, ]
         
         p[[i]]<-ggplot(sub,aes(x=BIN_START/1000000,y=WEIGHTED_FST))  + geom_point(size=0.4)+
@@ -94,13 +98,13 @@ for (i in unique(FST_k3$Range)) {
           scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200))+
           theme(axis.text.x = element_text(angle = 90, vjust=.5)) +
           scale_y_continuous(labels=scaleFUN)+
-          facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)") + ylab("FST") +scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline[[count]], mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+          facet_grid(~CHROM, scales='free_x', space="free_x")+ xlab("Position (Mbp)") + ylab("FST") +scale_y_continuous(labels=scaleFUN)+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")+ geom_vline(data_vline[[count]], mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
       }
   print(p[[i]])
 }
 
 
-tiff("//filer/projekte/barn/Scripts_5H_manus/Fig4.tiff", height=18, width=17.4, units="cm", res=600)
+tiff("Fig4.tiff", height=18, width=17.4, units="cm", res=600)
 ggarrange(p1, p[[1]], p[[2]], p[[3]],  nrow=4, heights=c(1, 1, 1, 1.3), labels = c("a", "b", "c", "d"))
 
 dev.off()
