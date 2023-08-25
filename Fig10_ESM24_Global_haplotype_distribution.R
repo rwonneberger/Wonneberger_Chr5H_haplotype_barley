@@ -507,7 +507,7 @@ dev.off()
 ## Landraces and cultivars by category ##
 #########################################
 
-tiff("ESM21.tiff", width=17.4, height=23.4, units="cm", res=600)
+tiff("ESM24.tiff", width=17.4, height=23.4, units="cm", res=600)
 
 legend_y = 0.05
 height = (1-legend_y)/4
