@@ -1,5 +1,5 @@
 # Wonneberger_Chr5H_haplotype_barley
-Scripts used in the paper "Major chromosome 5H haplotype switch structures the European two-rowed spring barley germplasm of the past 190 years" by Wonneberger et al., 2023
+Scripts used in the paper ["Major chromosome 5H haplotype switch structures the European two-rowed spring barley germplasm of the past 190 years"](https://link.springer.com/article/10.1007/s00122-023-04418-7) by Wonneberger et al., 2023, DOI: [https://doi.org/10.1007/s00122-023-04418-7](https://doi.org/10.1007/s00122-023-04418-7)
 
 The analyses in this paper rely on a number of files:
 - All analyses of variant data of the European two-rowed spring barley panel is based on the hapmap file published in [Schreiber et al., 2023](https://www.biorxiv.org/content/10.1101/2023.03.06.531259v1) which is available through the [Germinate database](https://ics.hutton.ac.uk/germinate-barn/). The genotypes are encoded as A, C, G, T. For some of the analyses, the data needs to be encoded as AA, CC, GG, TT or as numeric values (0, 1, 2). Conversion to diploid encoding and to numeric format are done with the `Prepare_snpmatrix_input_files.R` script
