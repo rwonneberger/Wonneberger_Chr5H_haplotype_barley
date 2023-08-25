@@ -86,15 +86,19 @@ snps_stats_pos$AF_roll<-rollmean(snps_stats_pos$AF1, 10000,fill = list(NA, NULL,
 data_vline_p1<-data.frame(chrom = c(  "5H", "5H" ),
                           vline = c(  68.78, 320.04))
 
+
+data_vline_centro<-data.frame(chrom = c("1H", "2H", "3H", "4H", "5H",  "6H", "7H" ),
+                              vline = c(211.460194, 298.511764, 270.896959, 273.503980, 214.765154, 252.168825, 329.584237))
+
 scaleFUN <- function(x) sprintf("%.2f", x)
 
 p1<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=PIC_roll, color=Cluster)) + geom_point(size=0.3) +     theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE)) +
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlindGrey8)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlindGrey8)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 p2<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=AF_roll, color=Cluster)) + geom_point(size=0.3) +    theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+theme(legend.position = "none") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+theme(legend.position = "none") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 
 #PIC and MAF per cluster at k = 3
@@ -159,16 +163,16 @@ scaleFUN <- function(x) sprintf("%.2f", x)
 
 p3<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=PIC_roll, color=Cluster)) + geom_point(size=0.3) +     theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE)) +
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlindGrey8)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +   scale_colour_manual(values = colorBlindGrey8)+  facet_grid(~chrom, scales='free_x', space="free_x")  + ylab("PIC") + labs(color="Release period")+ theme(legend.position = "none")+ theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),axis.title.x=element_blank())+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 p4<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=AF_roll, color=Cluster)) + geom_point(size=0.3) +    theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+ theme(legend.position = "none")+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+ theme(legend.position = "none")+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")
 
 
 p5<-ggplot(snps_stats_pos, aes(x=pos/1000000, y=AF_roll, color=Cluster)) + geom_point(size=0.3) +    theme_classic() + theme(panel.grid.minor = element_line(colour = "grey90"), panel.grid.major = element_line(colour = "grey90"), panel.border = element_rect(fill=NA))+ 
   scale_x_continuous(breaks = seq(from = 0, to = 600, by = 200), labels = function(x) format(x, scientific = FALSE))+
-  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+ theme(legend.position ="bottom",legend.title = element_text(size=9),legend.text = element_text(size=8), legend.spacing.y = unit(-0.1, 'cm'))+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+ guides(colour = guide_legend(override.aes = list(size=1)))+ labs(color = "k-means cluster")
+  theme(axis.text.x = element_text(angle = 90, vjust=.5)) +  scale_colour_manual(values = colorBlindGrey8)+ facet_grid(~chrom, scales='free_x', space="free_x")+ xlab("Position (Mbp)")  + ylab("Ref. allele freq.") + labs(color="Cluster")+ theme(legend.position ="bottom",legend.title = element_text(size=9),legend.text = element_text(size=8), legend.spacing.y = unit(-0.1, 'cm'))+scale_y_continuous(labels=scaleFUN)+ geom_vline(data_vline_p1, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="red")+geom_vline(data_vline_centro, mapping=aes(xintercept = vline), linetype="dotted", size=1.1, color="lightgrey")+ guides(colour = guide_legend(override.aes = list(size=1)))+ labs(color = "k-means cluster")
 
 legend<-get_legend(p5)
 legendplot<-as_ggplot(legend)
