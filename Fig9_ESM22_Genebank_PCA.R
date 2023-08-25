@@ -94,3 +94,43 @@ dev.off()
 
 
 
+## Color one geographic origin at a time
+regions<-unique(df$Region2)
+regions<-regions[!regions == "unknown"]
+
+p=list()
+count = 0
+
+for (i in regions){
+  count = count +1
+  
+emptycells<-which(is.na(df$Region2))
+df$Region2[emptycells ]<-"unknown"
+
+df$coloring<-"none"
+df[df$Region2 == i,]$coloring<-"yes"
+
+colors=c("grey", "#D55E00")
+
+
+p[[i]]<-ggplot(df%>%arrange(coloring) , aes(x=Axis1, y=Axis2, color=coloring) )+ geom_point(alpha=0.3, size=0.5) +
+  scale_color_manual(values = colors)+ 
+  xlab(paste0("PC1 (", round(eig.val$variance.percent[1], 2), "%)"))+ ylab(paste0("PC2 (", round(eig.val$variance.percent[2], 2), "%)"))+
+  theme_minimal() +
+  theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=7))+ 
+  theme(legend.title = element_text(size=7),
+        legend.text = element_text(size=6))+ 
+  guides(colour = guide_legend(override.aes = list(alpha=1)))+ 
+  theme(legend.position = "none")+
+  ggtitle(i)
+
+}
+
+tiff("ESM_22.tiff", height=30 ,width=17.4, units="cm", res=600)
+ggarrange( p[[1]], p[[2]], p[[3]], p[[4]], p[[5]], p[[6]], p[[7]],  ncol=2, nrow=4, labels = c("a", "b", "c", "d", "e", "f", "g"))
+
+dev.off()
+
+
+
