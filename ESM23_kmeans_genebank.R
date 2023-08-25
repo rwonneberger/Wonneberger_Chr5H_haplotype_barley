@@ -740,7 +740,7 @@ f9<-ggplot(k9 , aes(x=Axis1, y=Axis2, color=Hap_cluster) )+ geom_point(alpha=0.3
 
 
 
-tiff("ESM_19.tiff", height=8, width=17.4, res=600, units="cm")
+tiff("ESM_23.tiff", height=8, width=17.4, res=600, units="cm")
 figure<-ggarrange(f2, f3, f4, f5, f6, f7, f8, f9, nrow=2, ncol=4)
 
 figure
